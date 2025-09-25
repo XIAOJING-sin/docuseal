@@ -13,7 +13,6 @@ echo "Image: ${IMAGE_NAME}:${TAG}"
 
 # Build the Docker image
 docker build \
-  --platform linux/amd64,linux/arm64 \
   -t ${IMAGE_NAME}:${TAG} \
   -f Dockerfile \
   .
