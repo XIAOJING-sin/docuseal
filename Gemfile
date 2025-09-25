@@ -27,7 +27,6 @@ gem 'mysql2', require: false, platforms: [:ruby]
 gem 'oj'
 gem 'pagy'
 gem 'pg', require: false, platforms: [:ruby]
-gem 'sqlite3', '~> 1.4'
 gem 'premailer-rails'
 gem 'pretender'
 gem 'puma', require: false
@@ -42,7 +41,7 @@ gem 'ruby-vips'
 gem 'rubyXL'
 gem 'shakapacker'
 gem 'sidekiq'
-gem 'sqlite3', require: false
+gem 'sqlite3', '~> 1.4'
 gem 'strip_attributes'
 gem 'turbo-rails'
 gem 'twitter_cldr', require: false
