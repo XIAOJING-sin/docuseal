@@ -21,5 +21,14 @@ class Ability
     can :manage, Account, id: user.account_id
     can :manage, AccessToken, user_id: user.id
     can :manage, WebhookUrl, account_id: user.account_id
+    
+    # Enable Pro features
+    can :manage, :bulk_send
+    can :manage, :saml_sso
+    can :manage, :personalization_advanced
+    can :manage, :countless
+    can :manage, :reply_to
+    can :manage, :tenants
+    can :manage, :cfr
   end
 end

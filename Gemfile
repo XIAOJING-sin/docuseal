@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-ruby '3.4.2'
+ruby '3.4.6'
 
 gem 'arabic-letter-connector', require: 'arabic-letter-connector/logic'
 gem 'aws-sdk-s3', require: false
@@ -23,10 +23,11 @@ gem 'hexapdf'
 gem 'image_processing'
 gem 'jwt'
 gem 'lograge'
-gem 'mysql2', require: false
+gem 'mysql2', require: false, platforms: [:ruby]
 gem 'oj'
 gem 'pagy'
-gem 'pg', require: false
+gem 'pg', require: false, platforms: [:ruby]
+gem 'sqlite3', '~> 1.4'
 gem 'premailer-rails'
 gem 'pretender'
 gem 'puma', require: false

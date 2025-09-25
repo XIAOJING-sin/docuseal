@@ -1,39 +1,71 @@
+version: '3.8'
+
 services:
-  app:
+  docuseal:
+    image: docuseal-pro-unlocked:latest
+    container_name: docuseal-pro
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data:/data
+    environment:
+      # Database (SQLite by default)
+      - DATABASE_URL=sqlite3:///data/docuseal.sqlite3
+      
+      # Optional: PostgreSQL
+      # - DATABASE_URL=postgresql://postgres:password@db:5432/docuseal
+      
+      # App configuration
+      - RAILS_ENV=production
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE:-your_secret_key_here}
+      
+      # File storage (local by default)
+      # - AWS_ACCESS_KEY_ID=your_aws_key
+      # - AWS_SECRET_ACCESS_KEY=your_aws_secret
+      # - AWS_S3_BUCKET=your_bucket_name
+      
+      # Email (optional)
+      # - SMTP_ADDRESS=smtp.gmail.com
+      # - SMTP_PORT=587
+      # - SMTP_USERNAME=your_email@gmail.com
+      # - SMTP_PASSWORD=your_app_password
+      
+      # Redis for background jobs (optional)
+      - REDIS_URL=redis://redis:6379/0
+      
+      # Pro features are unlocked!
+      - DOCUSEAL_PRO_UNLOCKED=true
+    
     depends_on:
-      postgres:
-        condition: service_healthy
-    image: docuseal/docuseal:latest
-    ports:
-      - 3000:3000
-    volumes:
-      - ./docuseal:/data/docuseal
-    environment:
-      - FORCE_SSL=${HOST}
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/docuseal
-
-  postgres:
-    image: postgres:15
-    volumes:
-      - './pg_data:/var/lib/postgresql/data'
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: docuseal
+      - redis
+    
+    restart: unless-stopped
+    
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      test: ["CMD", "curl", "-f", "http://localhost:3000/up"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
-  caddy:
-    image: caddy:latest
-    command: caddy reverse-proxy --from $HOST --to app:3000
-    ports:
-      - 80:80
-      - 443:443
-      - 443:443/udp
+  redis:
+    image: redis:7-alpine
+    container_name: docuseal-redis
     volumes:
-      - .:/data
-    environment:
-      - HOST=${HOST}
+      - redis_data:/data
+    restart: unless-stopped
+    
+  # Optional: PostgreSQL database
+  # db:
+  #   image: postgres:15-alpine
+  #   container_name: docuseal-db
+  #   environment:
+  #     - POSTGRES_DB=docuseal
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=password
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   restart: unless-stopped
+
+volumes:
+  redis_data:
+  # postgres_data:
