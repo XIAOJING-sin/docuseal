@@ -25,7 +25,7 @@ WORKDIR /app
 RUN apk add --no-cache nodejs yarn git build-base && \
     gem install shakapacker
 
-COPY ./package.json ./yarn.lock ./
+COPY ./package.json ./
 
 RUN yarn install --network-timeout 1000000
 
