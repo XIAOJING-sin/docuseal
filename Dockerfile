@@ -69,6 +69,7 @@ COPY ./Gemfile ./Gemfile.lock ./
 RUN apk add --no-cache build-base && bundle install && apk del --no-cache build-base && rm -rf ~/.bundle /usr/local/bundle/cache && ruby -e "puts Dir['/usr/local/bundle/**/{spec,rdoc,resources/shared,resources/collation,resources/locales}']" | xargs rm -rf
 
 COPY ./bin ./bin
+RUN chmod +x ./bin/*
 COPY ./app ./app
 COPY ./config ./config
 COPY ./db/migrate ./db/migrate
