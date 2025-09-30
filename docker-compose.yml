@@ -33,9 +33,7 @@ services:
       # Redis for background jobs (optional)
       # - REDIS_URL=redis://redis:6379/0
 
-      # Disable Redis/Sidekiq for simple setup
-      - DISABLE_SIDEKIQ=true
-      - ACTIVE_JOB_ADAPTER=inline
+      # Enable embedded Sidekiq/Redis (default behavior)
 
       # Pro features are unlocked!
       - DOCUSEAL_PRO_UNLOCKED=true
