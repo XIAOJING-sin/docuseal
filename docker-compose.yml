@@ -39,6 +39,11 @@ services:
 
       # Pro features are unlocked!
       - DOCUSEAL_PRO_UNLOCKED=true
+      # Branding / product name
+      - PRODUCT_NAME=NovaManpowerSign
+      # Optional: HTTP headers and PDF metadata branding
+      - WEBHOOK_USER_AGENT=NovaManpowerSign Webhook
+      - PDF_INFO_CREATOR=NovaManpowerSign
 
     restart: unless-stopped
     networks:
