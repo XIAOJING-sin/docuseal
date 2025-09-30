@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   docuseal:
-    image: docuseal-pro-unlocked:latest
+    image: docuseal-pro-unlocked:2.0.0
     container_name: docuseal-pro
     ports:
       - "3001:3000"

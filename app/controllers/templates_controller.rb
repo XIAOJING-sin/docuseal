@@ -74,13 +74,8 @@ class TemplatesController < ApplicationController
     if @template.save
       Templates::CloneAttachments.call(template: @template, original_template: @base_template) if @base_template
 
-      begin
-        SearchEntries.enqueue_reindex(@template)
-        WebhookUrls.enqueue_events(@template, 'template.created')
-      rescue StandardError => e
-        Rollbar.error(e) if defined?(Rollbar)
-        # Non-critical post-create hooks should not block template creation
-      end
+      SearchEntries.enqueue_reindex(@template)
+      WebhookUrls.enqueue_events(@template, 'template.created')
 
       maybe_redirect_to_template(@template)
     else
@@ -95,13 +90,8 @@ class TemplatesController < ApplicationController
 
     @template.save!
 
-    begin
-      SearchEntries.enqueue_reindex(@template) if is_name_changed
-      WebhookUrls.enqueue_events(@template, 'template.updated')
-    rescue StandardError => e
-      Rollbar.error(e) if defined?(Rollbar)
-      # Non-critical hooks
-    end
+    SearchEntries.enqueue_reindex(@template) if is_name_changed
+    WebhookUrls.enqueue_events(@template, 'template.updated')
 
     head :ok
   end

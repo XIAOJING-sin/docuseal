@@ -22,14 +22,8 @@ class TemplatesUploadsController < ApplicationController
     end
 
     @template.update!(schema:)
-
-    begin
-      WebhookUrls.enqueue_events(@template, 'template.created')
-      SearchEntries.enqueue_reindex(@template)
-    rescue StandardError => e
-      Rollbar.error(e) if defined?(Rollbar)
-      # Non-critical failures (webhooks/reindex) should not block a successful upload
-    end
+    WebhookUrls.enqueue_events(@template, 'template.created')
+    SearchEntries.enqueue_reindex(@template)
 
     redirect_to edit_template_path(@template)
   rescue Templates::CreateAttachments::PdfEncrypted
