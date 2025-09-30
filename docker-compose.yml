@@ -5,45 +5,54 @@ services:
     image: docuseal-pro-unlocked:latest
     container_name: docuseal-pro
     ports:
-      - "3000:3000"
+      - "3001:3000"
     volumes:
       - ./data:/data
     environment:
       # Database (SQLite by default)
-      - DATABASE_URL=sqlite3:///data/docuseal.sqlite3
-      
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+
       # Optional: PostgreSQL
       # - DATABASE_URL=postgresql://postgres:password@db:5432/docuseal
-      
+
       # App configuration
       - RAILS_ENV=production
-      - SECRET_KEY_BASE=${SECRET_KEY_BASE:-your_secret_key_here}
-      
-      # Disable Redis/Sidekiq for simple setup
-      - DISABLE_SIDEKIQ=true
-      - ACTIVE_JOB_ADAPTER=inline
-      
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE:-nova_test}
+
       # File storage (local by default)
       # - AWS_ACCESS_KEY_ID=your_aws_key
       # - AWS_SECRET_ACCESS_KEY=your_aws_secret
       # - AWS_S3_BUCKET=your_bucket_name
-      
+
       # Email (optional)
       # - SMTP_ADDRESS=smtp.gmail.com
       # - SMTP_PORT=587
       # - SMTP_USERNAME=your_email@gmail.com
       # - SMTP_PASSWORD=your_app_password
-      
+
+      # Redis for background jobs (optional)
+      # - REDIS_URL=redis://redis:6379/0
+
+      # Disable Redis/Sidekiq for simple setup
+      - DISABLE_SIDEKIQ=true
+      - ACTIVE_JOB_ADAPTER=inline
+
       # Pro features are unlocked!
       - DOCUSEAL_PRO_UNLOCKED=true
-    
+
     restart: unless-stopped
-    
+    networks:
+      - postgresql_default
+
+
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/up"]
       interval: 30s
       timeout: 10s
       retries: 3
+
+
+
 
   # Optional: PostgreSQL database
   # db:
@@ -57,5 +66,8 @@ services:
   #     - postgres_data:/var/lib/postgresql/data
   #   restart: unless-stopped
 
-volumes:
-  # postgres_data:
+
+networks:
+  postgresql_default:
+    external: true
+
