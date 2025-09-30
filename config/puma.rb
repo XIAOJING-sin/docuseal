@@ -50,9 +50,14 @@ end
 # preload_app!
 
 if ENV['MULTITENANT'] != 'true' || ENV['DEMO'] == 'true'
-  require_relative '../lib/puma/plugin/redis_server'
-  require_relative '../lib/puma/plugin/sidekiq_embed'
+  unless ENV['DISABLE_SIDEKIQ'] == 'true'
+    require_relative '../lib/puma/plugin/sidekiq_embed'
+    plugin :sidekiq_embed
+  end
 
-  plugin :sidekiq_embed
-  plugin :redis_server
+  # Redis server plugin is only useful when embedding Redis; keep it behind the same flag
+  unless ENV['DISABLE_SIDEKIQ'] == 'true'
+    require_relative '../lib/puma/plugin/redis_server'
+    plugin :redis_server
+  end
 end
