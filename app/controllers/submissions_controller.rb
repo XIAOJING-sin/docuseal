@@ -56,11 +56,14 @@ class SubmissionsController < ApplicationController
                                            params: params.merge('send_completed_email' => true))
       end
 
-    WebhookUrls.enqueue_events(submissions, 'submission.created')
-
-    Submissions.send_signature_requests(submissions)
-
-    SearchEntries.enqueue_reindex(submissions)
+    begin
+      WebhookUrls.enqueue_events(submissions, 'submission.created')
+      Submissions.send_signature_requests(submissions)
+      SearchEntries.enqueue_reindex(submissions)
+    rescue StandardError => e
+      Rollbar.error(e) if defined?(Rollbar)
+      # Do not fail recipient creation if notifications or indexing fail
+    end
 
     redirect_to template_path(@template), notice: I18n.t('new_recipients_have_been_added')
   rescue Submissions::CreateFromSubmitters::BaseError => e
