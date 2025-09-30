@@ -5,7 +5,7 @@ set -e
 
 # Configuration
 IMAGE_NAME="docuseal-pro-unlocked"
-TAG="2.0.0
+TAG="2.0.0"
 REGISTRY_URL="" # Add your registry URL here (e.g., docker.io/username, ghcr.io/username)
 
 echo "🏗️ Building DocuSeal with Pro Features Unlocked..."
