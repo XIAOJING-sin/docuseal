@@ -1,4 +1,8 @@
 module.exports = {
+  content: [
+    './app/javascript/**/*.{js,vue}',
+    './app/views/**/*.erb'
+  ],
   plugins: [
     require('daisyui')
   ],
