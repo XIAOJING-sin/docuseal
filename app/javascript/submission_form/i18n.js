@@ -655,7 +655,7 @@ const uk = {
   continue: 'Продовжити',
   sign_now: 'Підписати зараз',
   type_here_: 'Введіть тут',
-  optional: 'необов'язково',
+  optional: "необов'язково",
   option: 'Опція',
   appears_on: "З'являється на",
   page: 'Сторінка',
