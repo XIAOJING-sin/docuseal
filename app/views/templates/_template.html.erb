@@ -59,12 +59,23 @@
         </span>
       <% end %>
       <% if can?(:destroy, template) %>
-        <span class="tooltip tooltip-left" data-tip="<%= template.archived_at? ? t('delete') : t('archive') %>">
-          <%= button_to template_path(template), data: template.archived_at? ? { turbo_confirm: t('template_deletion_is_irreversible_and_will_permanently_remove_all_associated_signed_documents_with_it_are_you_sure_') } : {}, params: { permanently: template.archived_at? }.compact_blank, method: :delete, class: 'btn btn-xs hover:btn-outline bg-base-200 btn-circle', aria_label: t('restore') do %>
-            <%= svg_icon(template.archived_at? ? 'trash' : 'archive', class: 'w-4 h-4 enabled') %>
-            <%= svg_icon('loader', class: 'w-4 h-4 animate-spin disabled') %>
+        <% if template.archived_at? %>
+          <% if current_user.role == User::ADMIN_ROLE %>
+            <span class="tooltip tooltip-left" data-tip="<%= t('delete') %>">
+              <%= button_to template_path(template), data: { turbo_confirm: t('template_deletion_is_irreversible_and_will_permanently_remove_all_associated_signed_documents_with_it_are_you_sure_') }, params: { permanently: true }, method: :delete, class: 'btn btn-xs hover:btn-outline bg-base-200 btn-circle', aria_label: t('delete') do %>
+                <%= svg_icon('trash', class: 'w-4 h-4 enabled') %>
+                <%= svg_icon('loader', class: 'w-4 h-4 animate-spin disabled') %>
+              <% end %>
+            </span>
           <% end %>
-        </span>
+        <% else %>
+          <span class="tooltip tooltip-left" data-tip="<%= t('archive') %>">
+            <%= button_to template_path(template), method: :delete, class: 'btn btn-xs hover:btn-outline bg-base-200 btn-circle', aria_label: t('archive') do %>
+              <%= svg_icon('archive', class: 'w-4 h-4 enabled') %>
+              <%= svg_icon('loader', class: 'w-4 h-4 animate-spin disabled') %>
+            <% end %>
+          </span>
+        <% end %>
       <% end %>
     </div>
   </div>

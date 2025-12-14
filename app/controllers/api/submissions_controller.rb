@@ -88,6 +88,10 @@ module Api
     end
 
     def destroy
+      if params[:permanently].in?(['true', true]) && current_user.role != User::ADMIN_ROLE
+        raise CanCan::AccessDenied, 'Not authorized'
+      end
+
       if params[:permanently].in?(['true', true])
         @submission.destroy!
       else
