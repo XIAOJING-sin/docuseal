@@ -1,9 +1,15 @@
 # frozen_string_literal: true
 
 class TemplateDocumentsController < ApplicationController
-  load_and_authorize_resource :template
+  # This endpoint mutates an existing Template (attaches documents, may update extracted fields),
+  # so authorization should be based on the ability to UPDATE that template.
+  #
+  # Also, the nested route uses `:template_id` (not `:id`), so we must load by `template_id`.
+  load_resource :template, id_param: :template_id
 
   def create
+    authorize!(:update, @template)
+
     if params[:blobs].blank? && params[:files].blank?
       return render json: { error: I18n.t('file_is_missing') }, status: :unprocessable_content
     end
