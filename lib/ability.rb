@@ -47,6 +47,10 @@ class Ability
       can :manage, :cfr
     elsif user.role == User::EDITOR_ROLE
       can :create, Template, account_id: user.account_id
+      # Editors can always archive (destroy action) templates they authored.
+      # In this app, "archive" is implemented via `TemplatesController#destroy` (soft delete).
+      can :destroy, Template, account_id: user.account_id, author_id: user.id
+
       if private_workspace
         can %i[update destroy], Template, account_id: user.account_id, author_id: user.id
         can :manage, Submission, account_id: user.account_id, created_by_user_id: user.id
