@@ -11,15 +11,23 @@ class Ability
     private_workspace =
       AccountConfig.find_by(account_id: user.account_id, key: AccountConfig::PRIVATE_WORKSPACE_KEY)&.value == true
 
-    # Base read for all roles
+    # Base read for all roles (must work for BOTH `can?` (instance checks) and `accessible_by`)
     if private_workspace && user.role != User::ADMIN_ROLE
-      # In private workspace mode, non-admin users can only see their own templates.
+      # Private workspace: non-admin users only see their own templates.
       can :read, Template, account_id: user.account_id, author_id: user.id
     else
-      # CanCan cannot merge an ActiveRecord scope rule with other Template rules when building
-      # `Template.accessible_by(...)`. Use a hash/subquery-based condition instead.
-      readable_templates = Abilities::TemplateConditions.collection(user, ability: 'manage').select(:id)
-      can :read, Template, id: readable_templates
+      # Default: users can see templates in their own account.
+      can :read, Template, account_id: user.account_id
+
+      # Testing accounts can additionally access templates shared to them via TemplateSharing.
+      # (This is the only cross-account visibility currently supported by SQL-friendly rules.)
+      if user.account.testing?
+        shared_template_ids =
+          TemplateSharing.where(account_id: [user.account_id, TemplateSharing::ALL_ID])
+                         .select(:template_id)
+
+        can :read, Template, id: shared_template_ids
+      end
     end
 
     if user.role == User::ADMIN_ROLE
@@ -66,7 +74,6 @@ class Ability
         can :read, Template, account_id: user.account_id, author_id: user.id
         can :read, Submission, account_id: user.account_id, created_by_user_id: user.id
       else
-        # Keep template visibility consistent with the base `:read, Template` rule above.
         can :read, Submission, account_id: user.account_id
       end
       can :read, TemplateFolder, account_id: user.account_id

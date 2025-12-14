@@ -1,11 +1,17 @@
 # frozen_string_literal: true
 
 class TemplatesFoldersController < ApplicationController
-  load_and_authorize_resource :template
+  # "Move template into folder" modifies the Template, so we authorize using :update.
+  # Use `template_id` from the nested route `/templates/:template_id/folder/...`.
+  load_resource :template, id_param: :template_id
 
-  def edit; end
+  def edit
+    authorize!(:update, @template)
+  end
 
   def update
+    authorize!(:update, @template)
+
     name = [params[:parent_name], params[:name]].compact_blank.join(' / ')
 
     @template.folder = TemplateFolders.find_or_create_by_name(current_user, name)
