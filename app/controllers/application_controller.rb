@@ -70,6 +70,7 @@ class ApplicationController < ActionController::Base
 
     locale   = params[:lang].presence if Rails.env.development?
     locale ||= current_account.locale
+    locale = 'en-GB' unless I18n.locale_available?(locale)
 
     I18n.with_locale(locale, &)
   end

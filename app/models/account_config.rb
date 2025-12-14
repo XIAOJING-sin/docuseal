@@ -51,6 +51,8 @@ class AccountConfig < ApplicationRecord
   COMBINE_PDF_RESULT_KEY = 'combine_pdf_result_key'
   DOCUMENT_FILENAME_FORMAT_KEY = 'document_filename_format'
   POLICY_LINKS_KEY = 'policy_links'
+  # When enabled, non-admin users only see templates/submissions they own.
+  PRIVATE_WORKSPACE_KEY = 'private_workspace'
 
   DEFAULT_VALUES = {
     SUBMITTER_INVITATION_EMAIL_KEY => lambda {

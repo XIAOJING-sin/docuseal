@@ -696,6 +696,8 @@ en: &en
   last_month: Last month
   this_year: This year
   policy_links: Policy Links
+  private_workspace: Private workspace
+  private_workspace_description: When enabled, non-admin users can only see templates and submissions they created. Admins can still see everything.
   markdown_content_e_g: Markdown content, e.g.
   privacy_policy: Privacy Policy
   the_code_has_been_sent_to_your_email: The code has been sent to your email.
