@@ -8,11 +8,16 @@ class Ability
 
     # `AccountConfig.value` is serialized into a text column (JSON). Querying with `value: true`
     # can be adapter-dependent, so we fetch and compare in Ruby for correctness.
-    private_workspace =
-      AccountConfig.find_by(account_id: user.account_id, key: AccountConfig::PRIVATE_WORKSPACE_KEY)&.value == true
+    #
+    # Product decision: folders are shared, but templates/submissions are private for non-admin users by default.
+    # Admins always see everything. If needed, admins can explicitly disable private mode by setting
+    # `private_workspace` to false.
+    private_workspace_enabled_for_non_admins =
+      AccountConfig.find_by(account_id: user.account_id, key: AccountConfig::PRIVATE_WORKSPACE_KEY)&.value != false
+    private_workspace = private_workspace_enabled_for_non_admins && user.role != User::ADMIN_ROLE
 
     # Base read for all roles (must work for BOTH `can?` (instance checks) and `accessible_by`)
-    if private_workspace && user.role != User::ADMIN_ROLE
+    if private_workspace
       # Private workspace: non-admin users only see their own templates.
       can :read, Template, account_id: user.account_id, author_id: user.id
     else
