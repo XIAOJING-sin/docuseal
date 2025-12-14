@@ -19,8 +19,9 @@ class TemplateFoldersAutocompleteController < ApplicationController
       name = parent_name
     end
 
-    template_folders = TemplateFolders.filter_active_folders(@template_folders.where(parent_folder:),
-                                                             Template.accessible_by(current_ability))
+    # Folders are shared across users in the same account.
+    # Do NOT filter folders based on currently-visible templates; templates are private per user.
+    template_folders = @template_folders.where(parent_folder:)
 
     name = name.to_s.downcase
 

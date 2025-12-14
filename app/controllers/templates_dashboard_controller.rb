@@ -11,8 +11,9 @@ class TemplatesDashboardController < ApplicationController
   helper_method :selected_order
 
   def index
-    @template_folders =
-      TemplateFolders.filter_active_folders(@template_folders.where(parent_folder_id: nil), @templates)
+    # Folders are shared across users in the same account.
+    # Do NOT filter folders based on currently-visible templates; templates are private per user.
+    @template_folders = @template_folders.where(parent_folder_id: nil)
 
     @template_folders = TemplateFolders.search(@template_folders, params[:q])
     @template_folders = TemplateFolders.sort(@template_folders, current_user, selected_order)
