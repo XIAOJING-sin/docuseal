@@ -19,6 +19,7 @@ en: &en
   language_ar: العربية
   language_ko: 한국어
   language_ja: 日本語
+  language_zh: 中文（简体）
   hi_there: Hi there
   pro: Pro
   thanks: Thanks

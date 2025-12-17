@@ -1,0 +1,97 @@
+# frozen_string_literal: true
+#
+# Simplified Chinese translations.
+# NOTE: This file intentionally starts with a high-signal subset. Missing keys will fall back to :en
+# via `config.i18n.fallbacks = [:en]`.
+zh:
+  # Language selector
+  language_zh: 中文（简体）
+
+  # Common
+  add: 添加
+  back: 返回
+  cancel: 取消
+  close: 关闭
+  create: 新建
+  delete: 删除
+  edit: 编辑
+  email: 邮箱
+  folder_name: 文件夹名称
+  move: 移动
+  name: 名称
+  remove: 移除
+  restore: 恢复
+  save: 保存
+  search: 搜索
+  settings: 设置
+  submit: 提交
+  update: 更新
+  upload: 上传
+  view: 查看
+  copy: 复制
+  copied: 已复制
+  copy_link: 复制链接
+  download: 下载
+  exporting: 正在导出
+  export: 导出
+  link: 链接
+  preferences: 偏好设置
+  preview: 预览
+  shared: 已共享
+  all: 全部
+  pending: 待处理
+  completed: 已完成
+  expired: 已过期
+  sign_now: 立即签署
+  uploading: 正在上传
+  creating: 正在创建
+  restoring: 正在恢复
+  are_you_sure_: 你确定吗？
+
+  # Auth
+  sign_in: 登录
+  sign_out: 退出登录
+  password: 密码
+  signing_in: 正在登录
+
+  # Templates / Submissions
+  document_templates_html: 文档模板
+  new_document_template: 新建文档模板
+  document_name: 文档名称
+  upload_new_document: 上传新文档
+  click_to_upload_or_drag_and_drop_html: '<span class="font-medium">点击上传</span>或拖拽到此处'
+  click_to_upload_or_drag_and_drop_files_html: '<span class="font-medium">点击上传</span>或拖拽文件到此处'
+  templates_not_found: 未找到模板
+  submissions: 提交记录
+  there_are_no_submissions: 暂无提交记录
+  archived: 已归档
+  archive: 归档
+  archiving: 正在归档
+  unarchive: 取消归档
+  view_archived: 查看已归档
+  add_recipients_html: 添加收件人
+  add_recipients: 添加收件人
+  send_to_recipients: 发送给收件人
+  sign_it_yourself: 自己签署
+  send_an_invitation_to_fill_and_complete_the_form: 发送邀请以填写并完成表单
+  template_deletion_is_irreversible_and_will_permanently_remove_all_associated_signed_documents_with_it_are_you_sure_: 模板删除不可撤销，将永久移除相关已签署文件。确定继续吗？
+  submission_deletion_is_irreversible_and_will_permanently_remove_all_associated_signed_documents_with_it_are_you_sure_: 提交记录删除不可撤销，将永久移除相关已签署文件。确定继续吗？
+  template_has_been_archived: 模板已归档
+  template_has_been_removed: 模板已移除
+  submission_has_been_archived: 提交记录已归档
+  submission_has_been_removed: 提交记录已移除
+
+  # Folder / move
+  move_into_folder: 移动到文件夹
+  new_folder_name: 新文件夹名称
+  new_subfolder_name: 新子文件夹名称
+  change_folder: 更改文件夹
+  change_parent_folder: 更改上级文件夹
+  document_template_has_been_moved: 模板已移动
+  unable_to_move_template_into_folder: 无法移动模板到该文件夹
+
+  # Private workspace toggle
+  private_workspace: 私有工作区
+  private_workspace_description: 启用后，非管理员用户只能看到自己创建的模板和提交记录；管理员仍可看到全部。
+
+

@@ -8,7 +8,8 @@ class AccountsController < ApplicationController
     'es-ES' => 'Español',
     'pt-PT' => 'Português',
     'de-DE' => 'Deutsch',
-    'it-IT' => 'Italiano'
+    'it-IT' => 'Italiano',
+    'zh' => '中文（简体）'
   }.freeze
 
   before_action :load_account
