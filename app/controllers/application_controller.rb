@@ -66,11 +66,28 @@ class ApplicationController < ActionController::Base
   private
 
   def with_locale(&)
-    return yield unless current_account
+    requested_locale = params[:lang].presence || session[:lang].presence
 
-    locale   = params[:lang].presence if Rails.env.development?
-    locale ||= current_account.locale
+    locale =
+      if requested_locale.present?
+        requested_locale
+      elsif current_account
+        current_account.locale
+      else
+        request.env['HTTP_ACCEPT_LANGUAGE'].to_s[BROWSER_LOCALE_REGEXP].to_s
+      end
+
+    locale =
+      if locale.to_s.starts_with?('en-') && locale != 'en-US'
+        'en-GB'
+      else
+        locale.to_s.split('-').first.presence || locale
+      end
+
     locale = 'en-GB' unless I18n.locale_available?(locale)
+
+    # Persist user choice from the language dropdown (e.g. on login page).
+    session[:lang] = locale if params[:lang].present?
 
     I18n.with_locale(locale, &)
   end

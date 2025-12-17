@@ -6,6 +6,11 @@ class Ability
   def initialize(user)
     return unless user
 
+    # Any signed-in user can manage their own preferences/settings.
+    can :manage, UserConfig, user_id: user.id
+    can :manage, EncryptedUserConfig, user_id: user.id
+    can :update, User, id: user.id
+
     # `AccountConfig.value` is serialized into a text column (JSON). Querying with `value: true`
     # can be adapter-dependent, so we fetch and compare in Ruby for correctness.
     #
