@@ -47,6 +47,19 @@ module Docuseal
 
   module_function
 
+  # Override/disable support email shown in the UI (settings sidebar).
+  #
+  # - If ENV['SUPPORT_EMAIL'] is set to a non-empty value, that email will be shown.
+  # - If ENV['SUPPORT_EMAIL'] is set to an empty string (or "false"), the support block is hidden.
+  # - Otherwise, falls back to the upstream default SUPPORT_EMAIL.
+  def support_email
+    value = ENV['SUPPORT_EMAIL']
+    return SUPPORT_EMAIL if value.nil?
+    return nil if value.blank? || value == 'false'
+
+    value
+  end
+
   def version
     @version ||= VERSION_FILE_PATH.read.strip if VERSION_FILE_PATH.exist?
   end

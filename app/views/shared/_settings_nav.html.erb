@@ -99,14 +99,14 @@
       <% end %>
     </ul>
   </menu-active>
-  <% if Docuseal.multitenant? || cannot?(:manage, :tenants) %>
+  <% if (Docuseal.multitenant? || cannot?(:manage, :tenants)) && Docuseal.support_email.present? %>
     <div id="support_channels" class="mx-4 border-t border-base-300 hidden md:block">
       <div class="text-sm mt-3">
         <%= t('need_help_ask_a_question_') %>
       </div>
       <div class="flex mt-3 space-x-3"></div>
-      <a href="mailto:<%= Docuseal::SUPPORT_EMAIL %>" target="_blank" class="w-full block mt-4 underline text-center">
-        <%= Docuseal::SUPPORT_EMAIL %>
+      <a href="mailto:<%= Docuseal.support_email %>" target="_blank" class="w-full block mt-4 underline text-center">
+        <%= Docuseal.support_email %>
       </a>
       <% if Docuseal.version.present? %>
         <a href="https://github.com/docusealco/docuseal/releases" target="_blank" class="badge badge-outline text-xs block mx-auto mt-4">

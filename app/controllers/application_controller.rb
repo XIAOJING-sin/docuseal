@@ -96,6 +96,7 @@ class ApplicationController < ActionController::Base
     return yield if I18n.locale != :'en-US' && I18n.locale != :en
 
     locale   = params[:lang].presence
+    locale ||= session[:lang].presence
     locale ||= request.env['HTTP_ACCEPT_LANGUAGE'].to_s[BROWSER_LOCALE_REGEXP].to_s
 
     locale =
@@ -106,6 +107,16 @@ class ApplicationController < ActionController::Base
       end
 
     locale = 'en-GB' unless I18n.locale_available?(locale)
+
+    # Persist browser-selected locale for Devise pages (before login).
+    session[:lang] = locale if params[:lang].present? || session[:lang].blank?
+
+    # Make the locale explicit in the URL on first visit (so it's shareable and consistent),
+    # but only for safe GET requests on Devise pages.
+    if devise_controller? && request.get? && params[:lang].blank?
+      redirect_to url_for(request.query_parameters.merge(lang: locale))
+      return
+    end
 
     I18n.with_locale(locale, &)
   end
