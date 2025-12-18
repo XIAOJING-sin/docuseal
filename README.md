@@ -46,6 +46,9 @@ DocuSeal is an open source platform that provides secure and efficient digital d
 - API and Webhooks for integrations
 - Easy to deploy in minutes
 
+## Docs
+- Chinese User Guide (简体中文使用指南): `docs/USER_GUIDE_zh-CN.md`
+
 ## Pro Features
 - Company logo and white-label
 - User roles
